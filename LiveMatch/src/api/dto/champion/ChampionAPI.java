@@ -31,4 +31,70 @@ public class ChampionAPI {
     private StatsAPI stats;
     private ArrayList<String> tags;
     private String title;
+
+    public ArrayList<String> getAllytips() {
+        return allytips;
+    }
+
+    public String getBlurb() {
+        return blurb;
+    }
+
+    public ArrayList<String> getEnemytips() {
+        return enemytips;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public ImageAPI getImage() {
+        return image;
+    }
+
+    public InfoAPI getInfo() {
+        return info;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getLore() {
+        return lore;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPartype() {
+        return partype;
+    }
+
+    public PassiveAPI getPassive() {
+        return passive;
+    }
+
+    public ArrayList<RecommendedAPI> getRecommended() {
+        return recommended;
+    }
+
+    public ArrayList<ChampionSpellAPI> getSpells() {
+        return spells;
+    }
+
+    public StatsAPI getStats() {
+        return stats;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    
+    
 }
