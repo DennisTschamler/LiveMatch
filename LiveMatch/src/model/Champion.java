@@ -19,9 +19,13 @@ public class Champion {
     private String name;
     private String imageName;
     
-    private float winrate;
+    private float winrate = 0.0f;
     
-    private int totalGamesPlayed;
+    private int totalGamesPlayed = 0;
+    
+    private int totalKills = 0;
+    private int totalAssits = 0;
+    private int totalDeaths = 0;
 
     public Champion(String name, String imageName) {
         this.name = name;
@@ -52,9 +56,34 @@ public class Champion {
         this.name = name;
     }
     
+    
     public ImageIcon getImageIcon() {
         System.out.println(imageName);
         return new ImageIcon(getClass().getResource("/assets/champions/"+imageName));
+    }
+
+    public int getTotalKills() {
+        return totalKills;
+    }
+
+    public int getTotalAssits() {
+        return totalAssits;
+    }
+
+    public int getTotalDeaths() {
+        return totalDeaths;
+    }
+    
+    public void setTotalKills(int totalChampionKills) {
+       this.totalKills = totalChampionKills;
+    }
+
+    public void setTotalAssits(int totalAssists) {
+       this.totalAssits = totalAssists;
+    }
+
+    public void setTotalDeaths(int totalDeathsPerSession) {
+        this.totalDeaths = totalDeathsPerSession;
     }
     
 }

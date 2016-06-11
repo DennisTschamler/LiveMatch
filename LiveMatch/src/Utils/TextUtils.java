@@ -26,4 +26,9 @@ public class TextUtils {
 
         return text;
     }
+    
+    public static String normalizeSummonerName(String name) {
+        name.replaceAll("%20", "");
+        return name.toLowerCase();
+    }
 }

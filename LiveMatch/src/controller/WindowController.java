@@ -34,6 +34,10 @@ public class WindowController implements ActionListener {
         Region server = view.getServer();
         
         System.out.println("Chosen: "+summonerName+" "+server.getName());
+        
+        long timeBefore = System.currentTimeMillis();
         controllers.add(new LiveMatchController(summonerName, server));
+        
+        System.out.println((System.currentTimeMillis()-timeBefore)/1000+"s to trvalo");
     }
 }

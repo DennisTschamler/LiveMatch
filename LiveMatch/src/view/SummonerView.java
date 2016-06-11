@@ -7,6 +7,7 @@ package view;
 
 import Utils.ImageUtils;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
@@ -40,37 +41,28 @@ public class SummonerView extends JPanel {
         setBackground(Color.red);
 
         initSummonerName();
-        initSummonerSpells();
         initChampionWinrate();
         initMostPlayedChampions();
-        initRank();
-        initWinRatio();
+        //initRank();
+        //initWinRatio();
         //initRankedStats();
 
     }
 
     private void initSummonerName() {
         JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(new Insets(10,0,0,0)));
         panel.setLayout(new GridLayout(0, 1, 10, 0));
 
         Image image = ImageUtils.resizeImage(player.getChampion().getImageIcon().getImage(), 48, 48);
         championIcon = new JLabel(new ImageIcon(image));
         championIcon.setToolTipText(player.getChampion().getName());
         panel.add(championIcon);
-
-        summonerName = new JLabel(player.getName());
-        summonerName.setHorizontalAlignment(JLabel.CENTER);
-        panel.add(summonerName);
- 
         
-        add(panel);
-    }
-    
-    private void initSummonerSpells() {
         JPanel p = new JPanel();
-        p.setLayout(new BoxLayout(p, BoxLayout.LINE_AXIS));
+        p.setLayout(new FlowLayout());
         
-        Image image = ImageUtils.resizeImage(player.getSpell1().getImageIcon().getImage(), 24, 24);
+        image = ImageUtils.resizeImage(player.getSpell1().getImageIcon().getImage(), 24, 24);
         JLabel spell1 = new JLabel(new ImageIcon(image));
         spell1.setToolTipText(player.getSpell1().getName());
         p.add(spell1);
@@ -79,8 +71,16 @@ public class SummonerView extends JPanel {
         JLabel spell2 = new JLabel(new ImageIcon(image));
         spell2.setToolTipText(player.getSpell1().getName());
         p.add(spell2);
+        panel.add(p);
         
-        add(p);
+        
+
+        summonerName = new JLabel(player.getName());
+        summonerName.setHorizontalAlignment(JLabel.CENTER);
+        panel.add(summonerName);
+ 
+        
+        add(panel);
     }
     
     private void initChampionWinrate() {

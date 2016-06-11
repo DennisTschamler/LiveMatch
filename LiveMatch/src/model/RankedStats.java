@@ -5,7 +5,7 @@
  */
 package model;
 
-import javax.swing.Icon;
+import api.dto.MiniSeriesAPI;
 import javax.swing.ImageIcon;
 
 /**
@@ -23,18 +23,26 @@ public class RankedStats {
     private int losses;
     private int leaguePoints;
     
+    private MiniSeriesAPI miniSeries;
     
     float winRatio;
 
-    public RankedStats(String tier, String division, int wins, int losses, int leaguePoints) {
+    public RankedStats(String tier, String division, int wins, int losses, int leaguePoints, MiniSeriesAPI miniSeries) {
         this.tier = tier;
         this.division = division;
         this.wins = wins;
         this.losses = losses;
         this.leaguePoints = leaguePoints;
+        this.miniSeries = miniSeries;
         
         this.winRatio = (float) wins/(wins+losses);
     }
+
+    public MiniSeriesAPI getMiniSeries() {
+        return miniSeries;
+    }
+    
+    
     
     public void setIsInSeries(boolean isInSeries) {
         this.isInSeries = isInSeries;

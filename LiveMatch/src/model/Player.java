@@ -5,8 +5,7 @@
  */
 package model;
 
-import api.dto.champion.ChampionAPI;
-import api.dto.summoner.SummonerSpellAPI;
+import api.dto.game.GameAPI;
 import java.util.ArrayList;
 
 /**
@@ -17,20 +16,31 @@ public class Player {
     private String name;
     private int id;
     
+    private int teamId;
+    
     private Spell spell1;
     private Spell spell2;
     
     private Champion champion;
     
-    private RankedStats rankedStats;
+    private RankedStats rankedStats = null;
     
     private ArrayList<Champion> mostPlayedChampions;
+    private ArrayList<GameAPI> recentRankedGames;
     
     public Player(String name, int id) {
         this.name = name;
         this.id = id;
     }
 
+    public void setTeamId(int id) {
+        this.teamId = id;
+    }
+    
+    public int getTeamId() {
+        return teamId;
+    }
+    
     public Spell getSpell1() {
         return spell1;
     }
@@ -46,10 +56,19 @@ public class Player {
     public void setRankedStats(RankedStats rankedStats) {
         this.rankedStats = rankedStats;
     }
+
+    public void setRecentRankedGames(ArrayList<GameAPI> recentRankedGames) {
+        this.recentRankedGames = recentRankedGames;
+    }
+    
+    public ArrayList<GameAPI> getRecentRankedGames() {
+        return recentRankedGames;
+    }    
     
     public ArrayList<Champion> getMostPlayedChampions() {
         return mostPlayedChampions;
     }
+    
     
     public void setMostPlayedChampions(ArrayList<Champion> list) {
         mostPlayedChampions = list;

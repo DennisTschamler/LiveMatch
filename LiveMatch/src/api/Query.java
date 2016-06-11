@@ -22,6 +22,18 @@ public class Query {
         return query;
     }
     
+    public static String getChampionStatsBySummonerId(Region region, int summonerId) {
+        String query =  region.getName() + ".api.pvp.net/api/lol/"+region.getName()+"/v1.3/stats/by-summoner/"+summonerId+"/ranked?";
+        
+        return query;
+    }
+    
+    public static String getRecentGamesBySummonerId(Region region, int summonerId) {
+        String query =  region.getName() + ".api.pvp.net/api/lol/"+region.getName()+"/v1.3/game/by-summoner/"+summonerId+"/recent?";
+        
+        return query;
+    }
+    
     public static String getSummonerByIds(Region region, ArrayList<Integer> ids) {
         String summoners = TextUtils.seperateListByComma(ids);
         String query =  region.getName() + ".api.pvp.net/api/lol/"+region.getName()+"/v1.4/summoner/"+summoners+"?";
@@ -37,12 +49,17 @@ public class Query {
     }
     
     public static String getCurrentGameBySummonerId(Region region, int summonerId) {
-        String query =  region.getName() + ".api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/"+region.getCode()+"/"+summonerId+"?champData=image&";
+        String query =  region.getName() + ".api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/"+region.getCode()+"/"+summonerId+"?";
         return query;
     }
     
     public static String getChampionById(Region region, int id) {
-        String query =  "global.api.pvp.net/api/lol/static-data/"+region.getCode()+"/v1.2/champion/"+id+"?";
+        String query =  "global.api.pvp.net/api/lol/static-data/"+region.getName()+"/v1.2/champion/"+id+"?champData=image&";
+        return query;
+    }
+    
+    public static String getTopChampionsBySummonerId(Region region, int summonerId, int count) {
+        String query =  region.getName()+".api.pvp.net/championmastery/location/"+region.getCode()+"/player/"+summonerId+"/topchampions?count="+count+"&";
         return query;
     }
     

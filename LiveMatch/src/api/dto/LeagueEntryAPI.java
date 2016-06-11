@@ -21,4 +21,50 @@ public class LeagueEntryAPI {
     private String playerOrTeamId;
     private String playerOrTeamName;
     private int wins;
+
+    public String getDivision() {
+        return division;
+    }
+
+    public boolean isIsFreshBlood() {
+        return isFreshBlood;
+    }
+
+    public boolean isIsHotStreak() {
+        return isHotStreak;
+    }
+
+    public boolean isIsInactive() {
+        return isInactive;
+    }
+
+    public boolean isIsVeteran() {
+        return isVeteran;
+    }
+
+    public int getLeaguePoints() {
+        return leaguePoints;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
+
+    public MiniSeriesAPI getMiniSeries() {
+        return miniSeries;
+    }
+
+    public String getPlayerOrTeamId() {
+        return playerOrTeamId;
+    }
+
+    public String getPlayerOrTeamName() {
+        return playerOrTeamName;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+    
+    
 }

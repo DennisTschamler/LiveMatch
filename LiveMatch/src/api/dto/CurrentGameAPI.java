@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package api.dto;
+package api.dto.game;
 
+import api.dto.ObserverAPI;
+import api.dto.ParticipantAPI;
 import api.dto.champion.BannedChampionAPI;
 import java.util.ArrayList;
 

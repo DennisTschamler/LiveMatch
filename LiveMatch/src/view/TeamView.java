@@ -7,31 +7,29 @@ package view;
 
 import java.awt.GridLayout;
 import java.awt.Insets;
-import javax.swing.JLabel;
+import java.util.ArrayList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import model.Team;
+import model.Player;
+import model.SummonerTableModel;
 
 /**
  *
  * @author Dennis
  */
 public class TeamView extends JPanel {
-    Team team;
 
-    public TeamView(Team team) {
-        this.team = team;
-
+    private JTable table;
+    
+    public TeamView() {
         setLayout(new GridLayout(0, 1));
         setBorder(new EmptyBorder(new Insets(15, 15, 15, 15)));
         
         add(new HeaderView());
-        
-        for(int i = 0; i < team.getSize(); i++) {
-            add(new SummonerView(team.getMember(i)));
-        }
+    }
+    
+    public void initTable(ArrayList<Player> players) {
+        table = new JTable(new SummonerTableModel(players));
     }
 }
