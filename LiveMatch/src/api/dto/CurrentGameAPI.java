@@ -6,7 +6,7 @@
 package api.dto.game;
 
 import api.dto.ObserverAPI;
-import api.dto.ParticipantAPI;
+import api.dto.CurrentGameParticipantAPI;
 import api.dto.champion.BannedChampionAPI;
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class CurrentGameAPI {
     
     private ObserverAPI observers;
     
-    private ArrayList<ParticipantAPI> participants;
+    private ArrayList<CurrentGameParticipantAPI> participants;
     
     private String platformId;
 
@@ -66,7 +66,7 @@ public class CurrentGameAPI {
         return observers;
     }
 
-    public ArrayList<ParticipantAPI> getParticipants() {
+    public ArrayList<CurrentGameParticipantAPI> getParticipants() {
         return participants;
     }
 

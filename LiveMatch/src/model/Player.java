@@ -5,6 +5,7 @@
  */
 package model;
 
+import api.constants.SeasonTier;
 import api.dto.game.GameAPI;
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class Player {
     
     private ArrayList<Champion> mostPlayedChampions;
     private ArrayList<GameAPI> recentRankedGames;
+    
+    private SeasonTier previousSeasonTier;
     
     public Player(String name, int id) {
         this.name = name;
@@ -102,6 +105,12 @@ public class Player {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
+
+    public SeasonTier getPreviousSeasonTier() {
+        return previousSeasonTier;
+    }
+
+    public void setPreviousSeasonTier(SeasonTier previousSeasonTier) {
+        this.previousSeasonTier = previousSeasonTier;
+    }
 }

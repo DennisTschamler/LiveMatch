@@ -16,8 +16,8 @@ public enum PlayerPosition {
 
     UNKNOWN(0, "NONE"),
     TOP(1, "TOP"),
-    MIDDLE(2, "MIDDLE"),
-    JUNGLE(3, "JUNGLE"),
+    MIDDLE(2, "MID"),
+    JUNGLE(3, "JUNG"),
     BOT(4, "BOT");
 
     private int id;

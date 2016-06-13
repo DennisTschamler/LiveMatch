@@ -49,7 +49,12 @@ public class Query {
     }
     
     public static String getCurrentGameBySummonerId(Region region, int summonerId) {
-        String query =  region.getName() + ".api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/"+region.getCode()+"/"+summonerId+"?";
+        String query =  region.getName() + ".api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/"+region.getId()+"/"+summonerId+"?";
+        return query;
+    }
+    
+    public static String getMatchById(Region region, int id) {
+        String query =  region.getName() + ".api.pvp.net/api/lol/"+region.getName()+"/v2.2/match/"+id+"?";
         return query;
     }
     
@@ -59,7 +64,7 @@ public class Query {
     }
     
     public static String getTopChampionsBySummonerId(Region region, int summonerId, int count) {
-        String query =  region.getName()+".api.pvp.net/championmastery/location/"+region.getCode()+"/player/"+summonerId+"/topchampions?count="+count+"&";
+        String query =  region.getName()+".api.pvp.net/championmastery/location/"+region.getId()+"/player/"+summonerId+"/topchampions?count="+count+"&";
         return query;
     }
     

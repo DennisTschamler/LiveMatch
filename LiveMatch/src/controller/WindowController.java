@@ -5,9 +5,14 @@
  */
 package controller;
 
+import api.RiotApiException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Region;
 import view.WindowView;
 
@@ -30,14 +35,22 @@ public class WindowController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String summonerName = view.getSummonerName();
-        Region server = view.getServer();
-        
-        System.out.println("Chosen: "+summonerName+" "+server.getName());
-        
-        long timeBefore = System.currentTimeMillis();
-        controllers.add(new LiveMatchController(summonerName, server));
-        
-        System.out.println((System.currentTimeMillis()-timeBefore)/1000+"s to trvalo");
+        try {
+            String summonerName = view.getSummonerName();
+            Region server = view.getServer();
+            
+            System.out.println("Chosen: "+summonerName+" "+server.getName());
+            
+            long timeBefore = System.currentTimeMillis();
+            controllers.add(new LiveMatchController(summonerName, server));
+            
+            System.out.println((System.currentTimeMillis()-timeBefore)/1000+"s to trvalo");
+        } catch (RiotApiException ex) {
+            System.out.println("Error: "+ex.getMessage());
+            //JOptionPane.showMessageDialog(null, ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error: "+ex.getMessage());
+            //JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }
 }

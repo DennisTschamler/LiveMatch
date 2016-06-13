@@ -10,22 +10,23 @@ package model;
  * @author Dennis
  */
 public enum Region {
-    EUNE("eune", "EUN1"),
-    EUW("euw", "EUW1");
+    EUNE("EUN1", "eune"),
+    EUW("EUW1", "euw");
     
-    private String name, code;
+    private String id;
+    private String name;
     
-    private Region(String name, String code) {
-        this.name = name;
-        this.code = code;
+    private Region(String id, String name) {
+        this.id = id;
+        this.name = name;   
     }
 
     public String getName() {
         return name;
     }
 
-    public String getCode() {
-        return code;
+    public String getId() {
+        return id;
     }
 
     @Override

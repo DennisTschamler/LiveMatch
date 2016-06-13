@@ -5,27 +5,25 @@
  */
 package view;
 
-import Utils.ImageUtils;
+import view.summoner.SummonerNameView;
+import view.summoner.RecentRankedGamesView;
+import view.summoner.SeriesView;
+import view.summoner.RankedWinratioView;
+import view.summoner.MostPlayedChampionsView;
+import view.summoner.CurrentSeasonView;
+import view.summoner.ChampionStatsView;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import model.Champion;
-import model.Match;
 import model.Player;
-import model.RankedStats;
-import model.Spell;
-import model.Team;
+import view.summoner.LastSeasonView;
 
 /**
  *
@@ -36,6 +34,8 @@ public class LiveMatchView extends JFrame {
     JPanel panel;
     private ArrayList<Player> team1;
     private ArrayList<Player> team2;
+    
+    JScrollPane pane;
 
     public LiveMatchView(ArrayList<Player> team1, ArrayList<Player> team2) {
         setTitle("test");
@@ -45,115 +45,62 @@ public class LiveMatchView extends JFrame {
 
         panel = new JPanel();
         panel.setBackground(Color.white);
-        panel.setLayout(new GridLayout(0, 7));
+        panel.setLayout(new GridLayout(0, 8));
         panel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
+
+        init();
+        
         getContentPane().add(panel);
 
-        
-        init();
-        pack();
+        panel.setVisible(true);
         setVisible(true);
     }
 
     private void init() {
 
-        /* Match match = new Match();
-
-         Player summ1 = new Player("ahoj", 54);
-         summ1.setChampion(new Champion("Caitlyn", "Caitlyn.png"));
-         summ1.setRankedStats(new RankedStats("platinum", "IV", 10, 12, 20));
-         summ1.setSpells(new Spell("Flash", "SummonerFlash.png"), new Spell("Teleport", "SummonerTeleport.png"));
-
-         ArrayList<Champion> champs = new ArrayList<>();
-         champs.add(new Champion("Cait", "Caitlyn.png"));
-         champs.add(new Champion("Amumu", "Amumu.png"));
-         champs.add(new Champion("Aatrox", "Aatrox.png"));
-
-         summ1.setMostPlayedChampions(champs);
-
-         Player summ2 = new Player("ahoj", 54);
-         summ2.setChampion(new Champion("Thresh", "Thresh.png"));
-         summ2.setRankedStats(new RankedStats("platinum", "IV", 10, 12, 20));
-         summ2.setMostPlayedChampions(champs);
-         summ2.setSpells(new Spell("Flash", "SummonerFlash.png"), new Spell("Teleport", "SummonerTeleport.png"));
-
-         ArrayList<Player> players = new ArrayList<>();
-
-         players.add(summ1);
-         players.add(summ2);
-         players.add(summ1);
-         players.add(summ2);
-         players.add(summ1);
-
-         ArrayList<Boolean> lastFiveGames = new ArrayList<>();
-
-         lastFiveGames.add(true);
-         lastFiveGames.add(false);
-         lastFiveGames.add(false);
-         lastFiveGames.add(false);
-         lastFiveGames.add(true);
-
-         summ1.setLastFiveGames(lastFiveGames);
-         summ2.setLastFiveGames(lastFiveGames);
-
-         */
         initHeader(new Color(52, 152, 219));
 
-        for (Player player : team1) {
-
-            // SUMMONER NAME
-            panel.add(new SummonerNameView(player.getName(), player.getChampion().getImageIcon()));
-
-            // CHAMPION
-            panel.add(new ChampionStatsView(player.getChampion()));
-            
-            // MOST PLAYED CHAMPIONS
-            panel.add(new MostPlayedChampionsView(player.getMostPlayedChampions()));
-            
-            // RECENT RANKED GAMES
-            panel.add(new RecentRankedGamesView(player.getRecentRankedGames()));
-
-            // CURRENT SEASON STATS
-            panel.add(new CurrentSeasonView(player.getRankedStats()));
-
-            // SERIES
-            panel.add(new SeriesView(player.getRankedStats().getMiniSeries()));
-            
-            
-            // RANKED WINRATIO
-            panel.add(new RankedWinratioView(player.getRankedStats()));
-
-        }
+        initTeam(team1);
 
         initHeader(new Color(231, 76, 60));
+        
+        initTeam(team2);
+        
+        pack();
 
-        for (Player player : team2) {
+    }
 
-            //initSummonerName(player.getName());
-            
+    private void initTeam(ArrayList<Player> team) {
+        for (Player player : team) {
+
             // SUMMONER NAME
             panel.add(new SummonerNameView(player.getName(), player.getChampion().getImageIcon()));
 
             // CHAMPION
             panel.add(new ChampionStatsView(player.getChampion()));
-            
+
             // MOST PLAYED CHAMPIONS
             panel.add(new MostPlayedChampionsView(player.getMostPlayedChampions()));
-            
+
             // RECENT RANKED GAMES
             panel.add(new RecentRankedGamesView(player.getRecentRankedGames()));
 
             // CURRENT SEASON STATS
             panel.add(new CurrentSeasonView(player.getRankedStats()));
-            
-            // SERIES
-            panel.add(new SeriesView(player.getRankedStats().getMiniSeries()));
-                        
+
+            if (player.getRankedStats() != null) {
+                panel.add(new SeriesView(player.getRankedStats().getMiniSeries()));
+            } else {
+                panel.add(new SeriesView(null));
+            }
+
+            // LAST SEASON TIER
+            panel.add(new LastSeasonView(player.getPreviousSeasonTier()));
+
             // RANKED WINRATIO
             panel.add(new RankedWinratioView(player.getRankedStats()));
 
         }
-
     }
 
     private void initHeader(Color color) {
@@ -177,7 +124,7 @@ public class LiveMatchView extends JFrame {
         mostPlayedChampions.setBackground(color);
         mostPlayedChampions.setHorizontalAlignment(JLabel.CENTER);
         panel.add(mostPlayedChampions);
-        
+
         JLabel recentRankedGames = new JLabel("Recent ranked games");
         recentRankedGames.setOpaque(true);
         recentRankedGames.setForeground(Color.white);
@@ -191,13 +138,20 @@ public class LiveMatchView extends JFrame {
         rankedStats.setBackground(color);
         rankedStats.setHorizontalAlignment(JLabel.CENTER);
         panel.add(rankedStats);
-        
+
         JLabel series = new JLabel("Series");
         series.setOpaque(true);
         series.setForeground(Color.white);
         series.setBackground(color);
         series.setHorizontalAlignment(JLabel.CENTER);
         panel.add(series);
+
+        JLabel lastSeason = new JLabel("Last Season");
+        lastSeason.setOpaque(true);
+        lastSeason.setForeground(Color.white);
+        lastSeason.setBackground(color);
+        lastSeason.setHorizontalAlignment(JLabel.CENTER);
+        panel.add(lastSeason);
 
         JLabel rankedWinrate = new JLabel("Ranked winrate");
         rankedWinrate.setOpaque(true);

@@ -14,20 +14,23 @@ import javax.swing.ImageIcon;
  */
 public class RankedStats {
 
-    private String tier;
-    private String division;
+    private String tier = "";
+    private String division = "";
     
     boolean isInSeries = false;
 
-    private int wins;
-    private int losses;
-    private int leaguePoints;
+    private int wins = 0;
+    private int losses = 0;
+    private int leaguePoints = 0;
     
-    private MiniSeriesAPI miniSeries;
+    private MiniSeriesAPI miniSeries = null;
     
-    float winRatio;
+    private long summoenerId;
+    
+    float winRatio = 0.0f;
 
-    public RankedStats(String tier, String division, int wins, int losses, int leaguePoints, MiniSeriesAPI miniSeries) {
+    public RankedStats(long summonerId, String tier, String division, int wins, int losses, int leaguePoints, MiniSeriesAPI miniSeries) {
+        this.summoenerId = summonerId;
         this.tier = tier;
         this.division = division;
         this.wins = wins;
@@ -41,8 +44,6 @@ public class RankedStats {
     public MiniSeriesAPI getMiniSeries() {
         return miniSeries;
     }
-    
-    
     
     public void setIsInSeries(boolean isInSeries) {
         this.isInSeries = isInSeries;
@@ -99,4 +100,10 @@ public class RankedStats {
     public float getWinRatio() {
         return winRatio;
     }
+
+    public long getSummoenerId() {
+        return summoenerId;
+    }
+    
+    
 }
