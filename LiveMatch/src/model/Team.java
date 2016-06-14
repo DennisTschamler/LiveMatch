@@ -26,7 +26,7 @@ public class Team {
         System.out.println("===TEAM===");
         for(int i = 0; i < members.size(); i++) {
             Player s = members.get(i);
-            System.out.println(s.getName()+" : "+s.getChampion().getName());
+            System.out.println(s.getName()+" : "+s.getChampionStats().getName());
         }
     }
     

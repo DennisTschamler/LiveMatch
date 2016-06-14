@@ -5,6 +5,7 @@
  */
 package view;
 
+import api.dto.Region;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
@@ -12,7 +13,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import model.Region;
 
 /**
  *

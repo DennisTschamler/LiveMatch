@@ -6,35 +6,38 @@
 package controller;
 
 import Utils.TextUtils;
-import api.Api;
+import api.RiotApi;
 import api.RiotApiException;
 import api.constants.GameSubType;
 import api.constants.SeasonTier;
-import api.dto.game.CurrentGameAPI;
-import api.dto.LeagueAPI;
-import api.dto.LeagueEntryAPI;
-import api.dto.CurrentGameParticipantAPI;
-import api.dto.RankedStatsAPI;
-import api.dto.SummonerAPI;
-import api.dto.champion.ChampionAPI;
-import api.dto.champion.ChampionMasteryAPI;
-import api.dto.champion.ChampionStatsAPI;
-import api.dto.game.GameAPI;
-import api.dto.game.RecentGamesAPI;
-import api.dto.match.MatchDetailAPI;
-import api.dto.match.ParticipantAPI;
-import api.dto.match.ParticipantIdentityAPI;
+import api.dto.Region;
+import api.dto.champion_mastery.ChampionMastery;
+import api.dto.current_game.CurrentGame;
+import api.dto.current_game.CurrentGameParticipant;
+import api.dto.game.Game;
+import api.dto.game.RecentGames;
+import api.dto.league.League;
+import api.dto.league.LeagueEntry;
+import api.dto.stats.ChampionStats;
+import api.dto.stats.RankedStats;
+
+import api.dto.match.MatchDetail;
+import api.dto.match.Participant;
+import api.dto.match.ParticipantIdentity;
+import api.dto.static_data.Champion;
+import api.dto.summoner.Summoner;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import model.Champion;
 import model.Match;
-import model.Region;
 import model.Player;
-import model.RankedStats;
+import model.PlayerChampionStats;
+import model.PlayerStats;
 import view.LiveMatchView;
 
 /**
@@ -47,15 +50,15 @@ public class LiveMatchController {
 
     private LiveMatchView liveMatchView;
 
-    Api api = new Api();
+    RiotApi api = new RiotApi();
     Region server;
 
     public LiveMatchController(String summonerName, Region server) throws RiotApiException, IOException {
 
         this.server = server;
 
-        ArrayList<CurrentGameParticipantAPI> team1 = new ArrayList<>();
-        ArrayList<CurrentGameParticipantAPI> team2 = new ArrayList<>();
+        ArrayList<CurrentGameParticipant> team1 = new ArrayList<>();
+        ArrayList<CurrentGameParticipant> team2 = new ArrayList<>();
 
         //match = api.getMatchBySummonerName(summonerName);
         match = new Match();
@@ -63,11 +66,11 @@ public class LiveMatchController {
         ArrayList<String> summonerNames = new ArrayList<>();
         summonerNames.add(TextUtils.normalizeSummonerName(summonerName));
 
-        Map<String, SummonerAPI> summoners = api.getSummonerBySummonerNames(summonerNames, server);
+        Map<String, Summoner> summoners = api.getSummonerBySummonerNames(summonerNames, server);
 
-        int summonerId = summoners.get(TextUtils.normalizeSummonerName(summonerName)).getId();
+        long summonerId = summoners.get(TextUtils.normalizeSummonerName(summonerName)).getId();
 
-        CurrentGameAPI currentGame = null;
+        CurrentGame currentGame = null;
         
         try {
             currentGame = api.getCurrentGameBySummonerId(summonerId, server);
@@ -80,7 +83,7 @@ public class LiveMatchController {
 
         ArrayList<Player> players = new ArrayList<>();
 
-        for (CurrentGameParticipantAPI summoner : currentGame.getParticipants()) {
+        for (CurrentGameParticipant summoner : currentGame.getParticipants()) {
             summIds.add((int) summoner.getSummonerId());
 
             if (summoner.getTeamId() == 100) {
@@ -91,7 +94,7 @@ public class LiveMatchController {
             Player player = new Player(summoner.getSummonerName(), (int) summoner.getSummonerId());
 
             // PLAYERS CHAMPION
-            player.setChampion(getChampionWithStats(summoner));
+            player.setChampionStats(getChampionWithStats(summoner));
 
             // PLAYERS TEAM ID
             player.setTeamId((int) summoner.getTeamId());
@@ -108,15 +111,13 @@ public class LiveMatchController {
             players.add(player);
         }
 
-        System.out.println("Participants size: " + summIds.size());
-
         // PLAYERS RANKED STATS
-        ArrayList<RankedStats> rankedStats = getRankedStatsForPlayer(summIds);
+        ArrayList<PlayerStats> rankedStats = getPlayerStats(summIds);
 
         for (int i = 0; i < players.size(); i++) {
 
             for (int j = 0; j < rankedStats.size(); j++) {
-                if (rankedStats.get(j).getSummoenerId() == players.get(i).getId()) {
+                if (rankedStats.get(j).getSummonerId() == players.get(i).getId()) {
                     players.get(i).setRankedStats(rankedStats.get(j));
                     break;
                 }
@@ -134,18 +135,18 @@ public class LiveMatchController {
         liveMatchView.pack();
     }
 
-    public Champion getChampionWithStats(CurrentGameParticipantAPI summoner) {
+    public PlayerChampionStats getChampionWithStats(CurrentGameParticipant summoner) {
 
-        ChampionAPI champion = null;
+        Champion champion = null;
 
         try {
             // SETTING CHAMPION
             champion = api.getChampionById((int) summoner.getChampionId(), server);
 
-            RankedStatsAPI rankedStatsApi = api.getChampionStatsBySummonerId((int) summoner.getSummonerId(), server);
-            Champion champ = new Champion(champion.getName(), champion.getImage().getFull());
+            RankedStats rankedStatsApi = api.getChampionStatsBySummonerId((int) summoner.getSummonerId(), server);
+            PlayerChampionStats champ = new PlayerChampionStats(champion.getName(), champion.getImage().getFull());
 
-            for (ChampionStatsAPI c : rankedStatsApi.getChampions()) {
+            for (ChampionStats c : rankedStatsApi.getChampions()) {
                 if (c.getId() == summoner.getChampionId()) {
                     champ.setWinrate((float) c.getStats().getTotalSessionsWon() / c.getStats().getTotalSessionsPlayed());
                     champ.setTotalGamesPlayed(c.getStats().getTotalSessionsPlayed());
@@ -162,19 +163,19 @@ public class LiveMatchController {
             Logger.getLogger(LiveMatchController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return new Champion(champion.getName(), champion.getImage().getFull());
+        return new PlayerChampionStats(champion.getName(), champion.getImage().getFull());
     }
 
-    public ArrayList<Champion> getMostPlayedChampions(CurrentGameParticipantAPI summoner) throws RiotApiException, IOException {
+    public ArrayList<PlayerChampionStats> getMostPlayedChampions(CurrentGameParticipant summoner) throws RiotApiException, IOException {
 
-        ArrayList<ChampionMasteryAPI> champions = api.getTopChampionsBySummonerId((int) summoner.getSummonerId(), server);
+        List<ChampionMastery> champions = api.getTopChampionsBySummonerId((int) summoner.getSummonerId(), server);
 
-        ArrayList<Champion> champs = new ArrayList<>();
+        ArrayList<PlayerChampionStats> champs = new ArrayList<>();
 
         for (int i = 0; i < champions.size(); i++) {
-            ChampionAPI c = api.getChampionById((int) champions.get(i).getChampionId(), server);
+            Champion c = api.getChampionById((int) champions.get(i).getChampionId(), server);
 
-            Champion c1 = new Champion(c.getName(), c.getImage().getFull());
+            PlayerChampionStats c1 = new PlayerChampionStats(c.getName(), c.getImage().getFull());
 
             champs.add(c1);
         }
@@ -182,14 +183,13 @@ public class LiveMatchController {
         return champs;
     }
 
-    public ArrayList<GameAPI> getRecentGames(CurrentGameParticipantAPI summoner) throws RiotApiException, IOException {
+    public ArrayList<Game> getRecentGames(CurrentGameParticipant summoner) throws RiotApiException, IOException {
 
-        RecentGamesAPI recentGamesAPI = api.getRecentGamesBySummonerid((int) summoner.getSummonerId(), server);
+        RecentGames recentGamesAPI = api.getRecentGamesBySummonerid((int) summoner.getSummonerId(), server);
 
-        ArrayList<GameAPI> recentRankedGames = new ArrayList<>();
+        ArrayList<Game> recentRankedGames = new ArrayList<>();
 
-        for (GameAPI g : recentGamesAPI.getGames()) {
-            System.out.println("Recent game: " + g.getSubType());
+        for (Game g : recentGamesAPI.getGames()) {
             if (g.getSubType().equals(GameSubType.RANKED_SOLO_5x5.getName())) {
                 if (recentRankedGames.size() != 5) {
                     recentRankedGames.add(g);
@@ -200,16 +200,16 @@ public class LiveMatchController {
         return recentRankedGames;
     }
 
-    public ArrayList<RankedStats> getRankedStatsForPlayer(ArrayList<Integer> summIds) {
+    public ArrayList<PlayerStats> getPlayerStats(ArrayList<Integer> summIds) {
 
         try {
-            Map<String, ArrayList<LeagueAPI>> leagueAPI = api.getLeagueBySummonerIds(summIds, server);
+            Map<String, List<League>> leagueAPI = api.getLeagueBySummonerIds(summIds, server);
 
-            ArrayList<RankedStats> rankedStats = new ArrayList<>();
+            ArrayList<PlayerStats> playerStats = new ArrayList<>();
 
-            for (Map.Entry<String, ArrayList<LeagueAPI>> entry : leagueAPI.entrySet()) {
+            for (Map.Entry<String, List<League>> entry : leagueAPI.entrySet()) {
 
-                LeagueEntryAPI entryAPI = entry.getValue().get(0).getEntries().get(0);
+                LeagueEntry entryAPI = entry.getValue().get(0).getEntries().get(0);
 
                 int wins = entryAPI.getWins();
                 int losses = entryAPI.getLosses();
@@ -218,26 +218,27 @@ public class LiveMatchController {
                 String tier = entry.getValue().get(0).getTier();
                 String division = entryAPI.getDivision();
 
-                rankedStats.add(new RankedStats(Long.parseLong(entry.getKey()), tier, division, wins, losses, leaguePoints, entryAPI.getMiniSeries()));
+                playerStats.add(new PlayerStats(Long.parseLong(entry.getKey()), tier, division, wins, losses, leaguePoints, entryAPI.getMiniSeries()));
             }
 
-            return rankedStats;
+            return playerStats;
         } catch (RiotApiException ex) {
-            System.out.println("ahoj");
+            if(ex.getErrorCode() == RiotApiException.DATA_NOT_FOUND) {
+                System.out.println("RiotApiException: League not found");
+            }
             Logger.getLogger(LiveMatchController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(LiveMatchController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return new ArrayList<RankedStats>();
+        return new ArrayList<PlayerStats>();
     }
 
-    private SeasonTier getPreviousSeasonTier(CurrentGameParticipantAPI summoner) throws IOException, RiotApiException {
-        RecentGamesAPI recentGamesAPI = api.getRecentGamesBySummonerid((int) summoner.getSummonerId(), server);
-        GameAPI game = null;
+    private SeasonTier getPreviousSeasonTier(CurrentGameParticipant summoner) throws IOException, RiotApiException {
+        RecentGames recentGames = api.getRecentGamesBySummonerid((int) summoner.getSummonerId(), server);
+        Game game = null;
 
-        for (GameAPI g : recentGamesAPI.getGames()) {
-            System.out.println("GAME SUB TYPE: "+g.getSubType());
+        for (Game g : recentGames.getGames()) {
             if (g.getSubType().equals(GameSubType.RANKED_SOLO_5x5.getName())) {
                 game = g;
                 break;
@@ -250,18 +251,18 @@ public class LiveMatchController {
 
         long matchId = game.getGameId();
 
-        MatchDetailAPI match = api.getMatchById((int) matchId, server);
+        MatchDetail match = api.getMatchById(matchId, server);
 
         int participantId = 0;
         
-        for (ParticipantIdentityAPI i : match.getParticipantIdentities()) {
+        for (ParticipantIdentity i : match.getParticipantIdentities()) {
             if (i.getPlayer().getSummonerId() == summoner.getSummonerId()) {
                 participantId = i.getParticipantId();
                 break;
             }
         }
         
-        for(ParticipantAPI p : match.getParticipants()) {
+        for(Participant p : match.getParticipants()) {
             if(p.getParticipantId() == participantId) {
                 return SeasonTier.valueOfTier(p.getHighestAchievedSeasonTier());
             }

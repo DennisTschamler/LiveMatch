@@ -74,10 +74,10 @@ public class LiveMatchView extends JFrame {
         for (Player player : team) {
 
             // SUMMONER NAME
-            panel.add(new SummonerNameView(player.getName(), player.getChampion().getImageIcon()));
+            panel.add(new SummonerNameView(player.getName(), player.getChampionStats().getImageIcon()));
 
             // CHAMPION
-            panel.add(new ChampionStatsView(player.getChampion()));
+            panel.add(new ChampionStatsView(player.getChampionStats()));
 
             // MOST PLAYED CHAMPIONS
             panel.add(new MostPlayedChampionsView(player.getMostPlayedChampions()));
@@ -95,6 +95,8 @@ public class LiveMatchView extends JFrame {
             }
 
             // LAST SEASON TIER
+            System.out.println(player.getPreviousSeasonTier().getTier());
+            
             panel.add(new LastSeasonView(player.getPreviousSeasonTier()));
 
             // RANKED WINRATIO

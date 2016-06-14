@@ -13,7 +13,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import model.RankedStats;
+import model.PlayerStats;
 
 /**
  *
@@ -21,9 +21,9 @@ import model.RankedStats;
  */
 public class RankedWinsView extends JPanel {
 
-    private RankedStats rankedStats;
+    private PlayerStats rankedStats;
 
-    public RankedWinsView(RankedStats rankedStats) {
+    public RankedWinsView(PlayerStats rankedStats) {
         this.rankedStats = rankedStats;
 
         setBackground(Color.white);

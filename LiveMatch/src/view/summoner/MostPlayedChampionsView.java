@@ -18,7 +18,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
-import model.Champion;
+import model.PlayerChampionStats;
 
 /**
  *
@@ -26,9 +26,9 @@ import model.Champion;
  */
 public class MostPlayedChampionsView extends JPanel {
 
-    private ArrayList<Champion> champions;
+    private ArrayList<PlayerChampionStats> champions;
 
-    public MostPlayedChampionsView(ArrayList<Champion> champions) {
+    public MostPlayedChampionsView(ArrayList<PlayerChampionStats> champions) {
         this.champions = champions;
 
         setBackground(Color.white);
@@ -53,7 +53,7 @@ public class MostPlayedChampionsView extends JPanel {
                 add(label);
             }*/
 
-            for (Champion c : champions) {
+            for (PlayerChampionStats c : champions) {
                 Image image = ImageUtils.resizeImage(c.getImageIcon().getImage(), 36, 36);
                 JLabel championIcon = new JLabel(new ImageIcon(image));
                 championIcon.setHorizontalAlignment(JLabel.CENTER);

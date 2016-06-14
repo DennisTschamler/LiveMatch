@@ -14,7 +14,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import model.Champion;
+import model.PlayerChampionStats;
 
 /**
  *
@@ -22,9 +22,9 @@ import model.Champion;
  */
 public class ChampionStatsView extends JPanel {
 
-    private Champion champion;
+    private PlayerChampionStats champion;
 
-    public ChampionStatsView(Champion champion) {
+    public ChampionStatsView(PlayerChampionStats champion) {
         this.champion = champion;
 
         setBackground(Color.white);

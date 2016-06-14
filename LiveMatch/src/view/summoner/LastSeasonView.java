@@ -24,7 +24,7 @@ import javax.swing.border.MatteBorder;
  */
 public class LastSeasonView extends JPanel {
 
-    private SeasonTier tier;
+    private final SeasonTier tier;
 
     public LastSeasonView(SeasonTier tier) {
         this.tier = tier;

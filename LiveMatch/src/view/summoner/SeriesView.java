@@ -6,7 +6,7 @@
 package view.summoner;
 
 import Utils.ImageUtils;
-import api.dto.MiniSeriesAPI;
+import api.dto.league.MiniSeries;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -24,12 +24,12 @@ import javax.swing.border.MatteBorder;
  */
 public class SeriesView extends JPanel {
 
-    private MiniSeriesAPI miniSeries;
+    private MiniSeries miniSeries;
     
     private boolean SHOW_SUMMONER_NAME = true;
     private boolean SHOW_CHAMPION_WINRATE = true;
 
-    public SeriesView(MiniSeriesAPI miniSeries) {
+    public SeriesView(MiniSeries miniSeries) {
         this.miniSeries = miniSeries;
 
         setBackground(Color.white);

@@ -6,7 +6,7 @@
 package model;
 
 import api.constants.SeasonTier;
-import api.dto.game.GameAPI;
+import api.dto.game.Game;
 import java.util.ArrayList;
 
 /**
@@ -22,14 +22,14 @@ public class Player {
     private Spell spell1;
     private Spell spell2;
     
-    private Champion champion;
+    private PlayerChampionStats champion;
     
-    private RankedStats rankedStats = null;
+    private PlayerStats rankedStats = null;
     
-    private ArrayList<Champion> mostPlayedChampions;
-    private ArrayList<GameAPI> recentRankedGames;
+    private ArrayList<PlayerChampionStats> mostPlayedChampions;
+    private ArrayList<Game> recentRankedGames;
     
-    private SeasonTier previousSeasonTier;
+    private SeasonTier previousSeasonTier = SeasonTier.UNRANKED;
     
     public Player(String name, int id) {
         this.name = name;
@@ -52,28 +52,28 @@ public class Player {
         return spell2;
     }
     
-    public RankedStats getRankedStats() {
+    public PlayerStats getRankedStats() {
         return rankedStats;
     }
     
-    public void setRankedStats(RankedStats rankedStats) {
+    public void setRankedStats(PlayerStats rankedStats) {
         this.rankedStats = rankedStats;
     }
 
-    public void setRecentRankedGames(ArrayList<GameAPI> recentRankedGames) {
+    public void setRecentRankedGames(ArrayList<Game> recentRankedGames) {
         this.recentRankedGames = recentRankedGames;
     }
     
-    public ArrayList<GameAPI> getRecentRankedGames() {
+    public ArrayList<Game> getRecentRankedGames() {
         return recentRankedGames;
     }    
     
-    public ArrayList<Champion> getMostPlayedChampions() {
+    public ArrayList<PlayerChampionStats> getMostPlayedChampions() {
         return mostPlayedChampions;
     }
     
     
-    public void setMostPlayedChampions(ArrayList<Champion> list) {
+    public void setMostPlayedChampions(ArrayList<PlayerChampionStats> list) {
         mostPlayedChampions = list;
     }
     
@@ -82,11 +82,11 @@ public class Player {
         this.spell2 = spell2;
     }
     
-    public void setChampion(Champion ch) {
+    public void setChampionStats(PlayerChampionStats ch) {
         this.champion = ch;
     }
     
-    public Champion getChampion() {
+    public PlayerChampionStats getChampionStats() {
         return champion;
     }
 

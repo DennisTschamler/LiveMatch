@@ -7,7 +7,7 @@ package view.summoner;
 
 import Utils.ImageUtils;
 import api.constants.PlayerPosition;
-import api.dto.game.GameAPI;
+import api.dto.game.Game;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -28,9 +28,9 @@ import javax.swing.border.MatteBorder;
  */
 public class RecentRankedGamesView extends JPanel {
     
-    private ArrayList<GameAPI> games;
+    private ArrayList<Game> games;
     
-    public RecentRankedGamesView(ArrayList<GameAPI> games) {
+    public RecentRankedGamesView(ArrayList<Game> games) {
         this.games = games;
         
         setBackground(Color.white);
@@ -52,7 +52,7 @@ public class RecentRankedGamesView extends JPanel {
         
         Collections.reverse(games);
         
-        for(GameAPI g : games) {
+        for(Game g : games) {
             JPanel p = new JPanel();
             p.setBackground(Color.white);
             p.setLayout(new GridLayout(3, 0));

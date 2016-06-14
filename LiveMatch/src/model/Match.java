@@ -5,7 +5,6 @@
  */
 package model;
 
-import api.dto.champion.ChampionAPI;
 import java.util.ArrayList;
 
 /**
@@ -15,11 +14,9 @@ import java.util.ArrayList;
 public class Match {
     Team firstTeam;
     Team secondTeam;
-    
-    ArrayList<Champion> bannedChampions;
+   
     
     public Match() {
-        bannedChampions = new ArrayList<>();
         firstTeam = new Team();
         secondTeam = new Team();
     }
@@ -39,10 +36,10 @@ public class Match {
         text += "===TEAM 1===\n";
         for(int i = 0; i < firstTeam.members.size(); i++) {
             Player s = firstTeam.members.get(i);
-            text += s.getName()+" : "+s.getChampion().getName()+"\n";
+            text += s.getName()+" : "+s.getChampionStats().getName()+"\n";
             
             text += "MostPlayed: ";
-            for(Champion c : s.getMostPlayedChampions()) {
+            for(PlayerChampionStats c : s.getMostPlayedChampions()) {
                 text += c.getName()+" ";
             }
             
@@ -52,10 +49,10 @@ public class Match {
         System.out.println("===TEAM 2===");
         for(int i = 0; i < secondTeam.members.size(); i++) {
             Player s = secondTeam.members.get(i);
-            text += s.getName()+" : "+s.getChampion().getName()+"\n";
+            text += s.getName()+" : "+s.getChampionStats().getName()+"\n";
             
             text += "MostPlayed: ";
-            for(Champion c : s.getMostPlayedChampions()) {
+            for(PlayerChampionStats c : s.getMostPlayedChampions()) {
                 text += c.getName()+" ";
             }
             
